@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <% include ../../partials/head.ejs %>
+    <link rel="stylesheet" href="/lib/dropify/css/dropify.min.css">
+    <script src="/lib/dropify/js/dropify.min.js" charset="utf-8"></script>
+    <script src="/lib/jquery/jquery.validate.min.js" charset="utf-8"></script>
+
+    <style>
+        .errorClass {
+            color: red;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+<% include ../../partials/sidebar.ejs %>
+
+<header>
+    <% include ../../partials/header.ejs %>
+</header>
+
+<main>
+    <span id="_message" class="hide"><%if(flash.message){%><%=flash.message%><%}%></span>
+    <div class="row">
+        <div class="col s6 card" style="margin-left: 25%; padding: 40px;">
+            <h5 style="text-align: center;
+                border-bottom: 2px solid #f39304;
+                padding-bottom: 20px;
+                margin-top: -10px;">ویرایش کاربر</h5>
+            <form name="addCategory" id="addCategory" class="col s12"  method="post" action="/api/v1/users/edit/<%=specialUser._id%>" enctype="multipart/form-data" accept-charset="utf-8">
+                <div class="row">
+                    <div class="input-field col s12" style="padding: 0 32px 0 80px;">
+                        <input name="avatar" type="file" class="dropify" data-max-file-size="3M" data-default-file="<%=specialUser.profile.avatar || ''%>" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <i class="material-icons prefix">account_circle</i>
+                        <input name="firstname" id="firstname" type="text" class="validate" dir="rtl" data-error=".errorTxt1" value="<%=specialUser.profile.firstname%>">
+                        <label for="firstname" >نام</label>
+                        <div class="errorClass errorTxt1"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <i class="material-icons prefix">account_circle</i>
+                        <input name="lastname" id="lastname" type="text" class="validate" dir="rtl" data-error=".errorTxt2" value="<%=specialUser.profile.lastname%>">
+                        <label for="lastname">نام خانوادگی</label>
+                        <div class="errorClass errorTxt2"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <i class="material-icons prefix">account_circle</i>
+                        <input name="email" id="email" type="email" class="validate" dir="rtl" data-error=".errorTxt3" value="<%= (!!specialUser.local) ? specialUser.local.email : specialUser.google.email %>">
+                        <label for="email" data-error="wrong">ایمیل</label>
+                        <div class="errorClass errorTxt3"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <i class="material-icons prefix">account_circle</i>
+                        <select name="role" id="role" class="validate" dir="rtl">
+                            <option value="Normal" <%if(specialUser.role == 'Normal'){%>selected<%}%>>کاربر عادی</option>
+                            <option value="Manager" <%if(specialUser.role == 'Manager'){%>selected<%}%>>مدیر</option>
+                        </select>
+                        <label for="role">نقش</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <i class="material-icons prefix">account_circle</i>
+                        <input name="premium" id="premium" type="checkbox" class="filled-in" <%if(specialUser.premium){%>checked<%}%>>
+                        <label for="premium">کاربر ویژه</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s6" style="margin-left: 25%;">
+                        <button type="submit" class="btn btn-lg btn-default" style="width: 100%; height: 45px;">ویرایش</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+    <div class="fixed-action-btn click-to-toggle" style="bottom: 45px; left: 24px;">
+        <a class="btn-floating btn-large pink waves-effect waves-light">
+            <i class="large material-icons">add</i>
+        </a>
+
+        <ul>
+            <li>
+                <a class="btn-floating red"><i class="material-icons">person_add</i></a>
+                <a href="/admin/categories/add" class="btn-floating fab-tip">افزودن کاربر</a>
+            </li>
+
+            <li>
+                <a class="btn-floating yellow darken-1"><i class="material-icons">business_center</i></a>
+                <a href="/admin/products/add" class="btn-floating fab-tip">افزودن محصول</a>
+            </li>
+
+            <li>
+                <a class="btn-floating green"><i class="material-icons">comment</i></a>
+                <a href="/admin/comments/new" class="btn-floating fab-tip">نظرات جدید</a>
+            </li>
+
+            <li>
+                <a class="btn-floating blue"><i class="material-icons">vpn_key</i></a>
+                <a href="/admin/changePassword" class="btn-floating fab-tip">تغییر کلمه عبور</a>
+            </li>
+        </ul>
+    </div>
+</main>
+
+<script charset="utf-8">
+    $(document).ready(function() {
+
+        var $toastContent = $('#_message').text();
+        Materialize.toast($toastContent, 5000);
+
+        $('select').material_select();
+        $('.dropify').dropify({
+
+            messages: {
+                'default': 'عکس کاربر را انتخاب کنید',
+                'replace': 'برای جایگزینی کلیک کنید',
+                'remove':  'حذف',
+                'error':   'خطا! مشکلی وجود دارد.'
+            },
+            tpl: {
+                wrap:            '<div class="dropify-wrapper"></div>',
+                loader:          '<div class="dropify-loader"></div>',
+                message:         '<div class="dropify-message"><span class="file-icon" /> <p style="text-align: center; font-family: IRANSans-web, sans-serif;">{{ default }}</p></div>',
+                preview:         '<div class="dropify-preview"><span class="dropify-render"></span><div class="dropify-infos"><div class="dropify-infos-inner"><p class="dropify-infos-message" style="text-align: center; font-family: IRANSans-web, sans-serif;">{{ replace }}</p></div></div></div>',
+                filename:        '<p class="dropify-filename"><span class="file-icon"></span> <span class="dropify-filename-inner"></span></p>',
+                clearButton:     '<button type="button" class="dropify-clear" style="text-align: center; font-family: IRANSans-web, sans-serif;">{{ remove }}</button>',
+                errorLine:       '<p class="dropify-error" style="text-align: center; font-family: IRANSans-web, sans-serif;">{{ error }}</p>',
+                errorsContainer: '<div class="dropify-errors-container"><ul></ul></div>'
+            }
+        });
+
+        $('#addCategory').validate({
+            rules: {
+                firstname: "required",
+                lastname: "required",
+                password: {
+                    required: true,
+                    minlength: 5
+                },
+                repeatPassword: {
+                    required: true,
+                    minlength: 5,
+                    equalTo: "#password"
+                },
+                email: {
+                    required: true,
+                    email:true
+                }
+            },
+            messages: {
+                firstname: "فیلد الزامی",
+                lastname: "فیلد الزامی",
+                email:{
+                    required: "فیلد الزامی",
+                    email: "فرمت ایمیل رعایت نشده است"
+                },
+                password: {
+                    required: "فیلد الزامی",
+                    minlength: 'حداقل 5 کاراکتر'
+                },
+                repeatPassword: {
+                    required: "فیلد الزامی",
+                    minlength: 'حداقل 5 کاراکتر',
+                    equalTo: "پسورد و تکرار آن مشابه نیستند"
+                }
+            },
+
+            errorElement : 'div',
+            errorPlacement: function(error, element) {
+                var placement = $(element).data('error');
+                if (placement) {
+                    $(placement).append(error)
+                } else {
+                    error.insertAfter(element);
+                }
+            }
+        });
+
+    });
+</script>
+</body>
+</html>

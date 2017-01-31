@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <% include ../../partials/head.ejs %>
+
+    <style>
+        .modal {
+            bottom: auto;
+        }
+
+        .modal .modal-content {
+            box-shadow: none;
+            border: none;
+            outline: none;
+            border-radius: 0;
+            background: #fafafa;
+        }
+
+        .modal .modal-footer {
+            border: none;
+        }
+
+        td a:hover {
+            color: #18bc9c;
+        }
+
+    </style>
+</head>
+<body>
+<% include ../../partials/sidebar.ejs %>
+
+<header>
+    <% include ../../partials/header.ejs %>
+</header>
+
+<main>
+    <span id="_message" class="hide"><%if(flash.message){%><%=flash.message%><%}%></span>
+    <div class="row">
+        <div class="col s12 input-group search-wrapper" style="margin-bottom: 10px;">
+            <label for="userSearch" class="col s1 input-field right">جستجو:</label>
+            <input id="userSearch" class="col s5 input-field right" dir="rtl" type="text">
+        </div>
+        <div class="col s12">
+            <table id="userList" class="striped bordered" dir="rtl">
+                <thead style="background-color: #fff;">
+                <tr><th>عکس</th><th>نام</th><th>ایمیل</th><th>تاریخ ثبت نام</th><th>ویژه</th><th>امور مالی</th><th>ویرایش</th><th>حذف</th></tr>
+                </thead>
+                <tbody>
+                <%for(var i = 0; i < 1/*users.length*/; i++) {%>
+                <tr>
+                    <td class="userID hide"><%=/*users[i]._id*/%>test</td>
+                    <td class="image" style="padding: 0;"><a href="/<%=/*users[i].profile.username*/%>test"><img src="<%=/*users[i].profile.avatar*/%>test" style="width: 60px; height: 50px; border-radius: 5px;" ></a></td>
+                    <td class="name"><%= (1/*users[i].local*/) ? /*users[i].local.name*/"test" : /*users[i].google.name*/"test" %></td>
+                    <td class="email"><%= (1/*users[i].local*/) ? "test"/*users[i].local.email*/ : /*users[i].google.email*/"test" %></td>
+                    <td class="registrationDate"><%=/*users[i].registrationDate*/%>test</td>
+                    <td class="Premium"><%=/*users[i].premium*/%>test</td>
+                    <td class="finance"><a href="/admin/users/finance/<%=/*users[i]._id*/%>test"><i class="fa fa-money small"></i></a></td>
+                    <td class="edit"><a href="/admin/users/edit/<%=/*users[i]._id*/%>test"><i class="fa fa-pencil small"></i></a></td>
+                    <td class="delete"><a href="#deleteUser" class="modal-trigger" onclick="chooseUser(this, 'Delete')"><i class="fa fa-trash small"></i></a></td>
+                </tr>
+                <%}%>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="fixed-action-btn click-to-toggle" style="bottom: 45px; left: 24px;">
+        <a class="btn-floating btn-large pink waves-effect waves-light">
+            <i class="large material-icons">add</i>
+        </a>
+
+        <ul>
+            <li>
+                <a class="btn-floating red"><i class="material-icons">person_add</i></a>
+                <a href="/admin/users/add" class="btn-floating fab-tip">افزودن کاربر</a>
+            </li>
+
+            <li>
+                <a class="btn-floating yellow darken-1"><i class="material-icons">business_center</i></a>
+                <a href="/admin/products/add" class="btn-floating fab-tip">افزودن محصول</a>
+            </li>
+
+            <li>
+                <a class="btn-floating green"><i class="material-icons">comment</i></a>
+                <a href="/admin/comments/new" class="btn-floating fab-tip">نظرات جدید</a>
+            </li>
+
+            <li>
+                <a class="btn-floating blue"><i class="material-icons">vpn_key</i></a>
+                <a href="/admin/changePassword" class="btn-floating fab-tip">تغییر کلمه عبور</a>
+            </li>
+        </ul>
+    </div>
+</main>
+
+<!-- Modal Structure -->
+<div id="deleteUser" class="modal">
+    <div class="modal-content">
+        <h5 style="text-align: right; background: none;">آیا مطمئنید؟</h5>
+    </div>
+    <div class="modal-footer">
+        <form action="/api/v1/users/delete" method="post">
+            <input id="_id" type="text" class="hide" name="_id">
+            <button type="submit" class=" modal-action modal-close waves-effect waves-green btn-flat">حذف</button>
+            <button type="button" class=" modal-action modal-close waves-effect waves-red btn-flat">لغو</button>
+        </form>
+
+    </div>
+</div>
+
+<script charset="utf-8">
+    var selectedUser;
+
+
+    $(document).ready(function() {
+
+        var $toastContent = $('#_message').text();
+        Materialize.toast($toastContent, 5000);
+
+        $('.modal-trigger').leanModal();
+
+        $("#userSearch").keyup( search );
+
+
+    });
+
+    function search() {
+
+        // Retrieve the input field text and reset the count to zero
+        var filter = $(this).val();
+
+        // Loop through the user list
+        $(".name").each(function(){
+
+            // If the list item does not contain the text phrase fade it out
+            if ($(this).parent().text().search(new RegExp(filter, "i")) < 0) {
+                $(this).parent().fadeOut();
+
+                // Show the list item if the phrase matches and increase the count by 1
+            } else {
+                $(this).parent().show();
+            }
+        });
+    }
+
+
+    function chooseUser(Node, tag) {
+
+        selectedUser = $(Node).parent().parent().find("td:nth-child(1)").text();
+        $('#_id').val( selectedUser );
+
+
+    }
+</script>
+
+</body>
+</html>

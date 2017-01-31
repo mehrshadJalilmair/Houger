@@ -1,0 +1,49 @@
+@font-face {
+    font-family: 'IRANSansBold';
+    src: url(../fonts/IRANSans/IRANSans-Bold-web.eot);
+    src: url(../fonts/IRANSans/IRANSans-Bold-web.eot?#iefix) format('eot'),
+    url(../fonts/IRANSans/IRANSans-Bold-web.woff2) format('woff2'),
+    url(../fonts/IRANSans/IRANSans-Bold-web.woff) format('woff'),
+    url(../fonts/IRANSans/IRANSans-Bold-web.ttf) format('ttf');
+    font-weight: 700
+}
+
+@font-face {
+    font-family: 'IRANSansMedium';
+    src: url(../fonts/IRANSans/IRANSans-Medium-web.eot);
+    src: url(../fonts/IRANSans/IRANSans-Medium-web.eot?#iefix) format('eot'),
+    url(../fonts/IRANSans/IRANSans-Medium-web.woff2) format('woff2'),
+    url(../fonts/IRANSans/IRANSans-Medium-web.woff) format('woff'),
+    url(../fonts/IRANSans/IRANSans-Medium-web.ttf) format('ttf');
+    font-weight: 500
+}
+
+@font-face {
+    font-family: 'IRANSansUltraLight';
+    src: url(../fonts/IRANSans/IRANSans-UltraLight-web.eot);
+    src: url(../fonts/IRANSans/IRANSans-UltraLight-web.eot?#iefix)format('eot'),
+    url(../fonts/IRANSans/IRANSans-UltraLight-web.woff2) format('woff2'),
+    url(../fonts/IRANSans/IRANSans-UltraLight-web.woff) format('woff'),
+    url(../fonts/IRANSans/IRANSans-UltraLight-web.ttf) format('ttf');
+    font-weight: 200
+}
+
+@font-face {
+    font-family: 'IRANSansLight';
+    src: url(../fonts/IRANSans/IRANSans-Light-web.eot);
+    src: url(../fonts/IRANSans/IRANSans-Light-web.eot?#iefix) format('eot'),
+    url(../fonts/IRANSans/IRANSans-Light-web.woff2) format('woff2'),
+    url(../fonts/IRANSans/IRANSans-Light-web.woff) format('woff'),
+    url(../fonts/IRANSans/IRANSans-Light-web.ttf) format('ttf');
+    font-weight: 300
+}
+
+@font-face {
+    font-family: 'IRANSans-web';
+    src: url(../fonts/IRANSans/IRANSans-web.eot);
+    src: url(../fonts/IRANSans/IRANSans-web.eot?#iefix) format('eot'),
+    url(../fonts/IRANSans/IRANSans-web.woff2) format('woff2'),
+    url(../fonts/IRANSans/IRANSans-web.woff) format('woff'),
+    url(../fonts/IRANSans/IRANSans-web.ttf) format('ttf');
+    font-weight: 400
+}
